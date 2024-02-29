@@ -1,21 +1,21 @@
 tasks=[]
 
-### add new task:
+   # add new task:
 def addTask():
     task=input("Please enter a task :")
     tasks.append(task)
     print(f"task '{task}' added to the list.")
 
-### read the tasks of the list:
+    # read the tasks of the list:
 def listTask():
     if not tasks:
         print("there are no tasks currently.")
     else:
         print("current tasks :")
-        for index, task in enumerate(tasks):
+        for index, task in enumerate(tasks ,start=1):
            print(f"Task #'{index}'. '{task}' ")
             
-### delete a task from the list:
+    # delete a task from the list:
 def deleteTask():
     listTask()
     try:
@@ -32,11 +32,11 @@ def deleteTask():
 
 
 if __name__=="__main__":
-    ## create a loop to run the app
-    print("Welcome to the to do list app :)")
+    # create a loop to run the app
+    print("Welcome to the 'To-Do-List' app :)")
     while True:
         print("\n")
-        print("Please select one of the following options")
+        print("Please select one of the following options:")
         print("------------------------------------------")
         print("1. Add a new task")
         print("2. Delete a task")
@@ -56,4 +56,4 @@ if __name__=="__main__":
         else:
             print("Invalid input,Please try again.")        
 
-    print("Goodbye")        
+    print("Goodbye")               
