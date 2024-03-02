@@ -2,6 +2,7 @@
 import pytest
 from unittest.mock import patch
 from ToDoList import tasks,addTask,listTask,deleteTask
+
 #we are tesing 'ToDoList' application  :
        
 def test_addTask(capsys):
