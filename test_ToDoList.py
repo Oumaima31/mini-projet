@@ -14,17 +14,17 @@ def test_addTask(capsys):
     out, _ = capsys.readouterr()
     assert out.strip() == "Task 'Doing something' added to the list."
 
-       
+
 def test_listTask(capsys):
         # we tested if there is no task:
     with capsys.disabled():
         listTask()
-        cap=capsys.readouterr()
-        assert cap.out.strip()== "there are no tasks currently."
+        out, _ =capsys.readouterr()
+        assert out.strip()== "there are no tasks currently."
 
        # then we added a task and verified if it does  exist or not:
     tasks.append("task 1")
-    assert cap.out.strip()=="current tasks: task #1 :task 1 \n task #2 : task 2 "
+    assert out.strip()=="current tasks: task #1 :task 1 \n task #2 : task 2 "
 
 
 def test_deledteTask(capsys,monkeypatch):
@@ -40,3 +40,9 @@ def test_deledteTask(capsys,monkeypatch):
     assert tasks==["task 1","task 3"]
     cap= capsys.readouterr()
     assert cap.out.strip() == "task 2 has been removed."
+
+def main():
+    pytest.main(['-v'])
+
+if __name__ == "__main__":
+    main()
