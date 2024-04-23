@@ -1,48 +1,46 @@
-
-import pytest
+import unittest
 from unittest.mock import patch
-from ToDoList import tasks,addTask,listTask,deleteTask
 
-#we are tesing 'ToDoList' application  :
-       
-def test_addTask(capsys):
-    #  we are adding a fake task called'Doing something'
-    with patch('builtins.input',return_val='Doing something'):
+from ToDoList import tasks, addTask, listTask, deleteTask
+
+
+class TestToDoListApp(unittest.TestCase):
+    def setUp(self):
+        tasks.clear()
+
+    @patch('builtins.input', return_value="Task 1")
+    def test_add_task(self, mock_input):
         addTask()
-    #  then testing if task has added
-    assert tasks==['Doing something']
-    out, _ = capsys.readouterr()
-    assert out.strip() == "Task 'Doing something' added to the list."
+        self.assertEqual(len(tasks), 1)
+        self.assertIn("Task 1", tasks[0])
+        mock_input.assert_called_with("Please enter a task :")
 
-
-def test_listTask(capsys):
-        # we tested if there is no task:
-    with capsys.disabled():
+@patch('builtins.input')
+def test_list_tasks(self, mock_input):
+        tasks.append("Task 1")
+        tasks.append("Task 2")
+        mock_input.return_value = "3"
         listTask()
-        out, _ =capsys.readouterr()
-        assert out.strip()== "there are no tasks currently."
+        self.assertEqual(len(tasks), 2)
+        mock_input.assert_called_with("Enter your choice :")
+        self.assertIn("Task #'1'. 'Task 1'", mock_input.call_args_list[1].args[1])
+        self.assertIn("Task #'2'. 'Task 2'", mock_input.call_args_list[1].args[1])
 
-       # then we added a task and verified if it does  exist or not:
-    tasks.append("task 1")
-    assert out.strip()=="current tasks: task #1 :task 1 \n task #2 : task 2 "
+@patch('builtins.input')
+def test_delete_task(self, mock_input):
+        tasks.append("Task 1")
+        tasks.append("Task 2")
+        mock_input.side_effect = ["2", "0", "5", "4", ""]
+        deleteTask()
+        self.assertEqual(len(tasks), 2)
+        mock_input.assert_called_with("Enter your choice :")
+        mock_input.assert_called_with("Enter the # to delete : ")
+        mock_input.call_args_list[1].args[0].assertIsInstance(mock_input.call_args_list[1].args[0], int)
+        mock_input.call_args_list[2].args[0].assertIsInstance(mock_input.call_args_list[2].args[0], int)
+        self.assertIn("task 0 has been removed.", mock_input.call_args_list[1].args[1])
+        self.assertIn("task 5 was not found.", mock_input.call_args_list[2].args[1])
+        self.assertIn("Goodbye", mock_input.call_args_list[3].args[0])
+    
 
-
-def test_deledteTask(capsys,monkeypatch):
-
-        #we addet 3 tasks to the list:
-    tasks.append(["task 1","task 2","task 3"])
-
-        #we deleted 'task 2' :
-    with monkeypatch.context() as m:
-        m.setattr('builtins.input', lambda _: '2')
-        deleteTask(tasks)
-        #we tested if the task had deleted successefully:
-    assert tasks==["task 1","task 3"]
-    cap= capsys.readouterr()
-    assert cap.out.strip() == "task 2 has been removed."
-
-def main():
-    pytest.main(['-v'])
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    unittest.main()

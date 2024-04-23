@@ -26,8 +26,8 @@ class TestTasks(unittest.TestCase):
 
 @patch('builtins.input', side_effect=['3\n', 'Go to the store\n', '4\n'])
 def test_list_tasks(self, mock_input):
-    listTask()
-    self.assertEqual(mock_input.call_args_list, [('',), ('',), ('',)])
+       listTask()
+       self.assertEqual(mock_input.call_args_list, [('',), ('',), ('',)])
 
 if __name__ == '__main__':
     unittest.main()

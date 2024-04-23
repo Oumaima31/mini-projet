@@ -19,7 +19,7 @@ def listTask():
 def deleteTask():
     listTask()
     try:
-       taskToDelete=int(input("Enter the # to delete : "))
+       taskToDelete=int(input("Enter the # to delete : ").strip())
        if taskToDelete>=0 and taskToDelete<len(tasks):
            tasks.pop(taskToDelete)
            print(f"task {taskToDelete} has been removed.")
